@@ -1,0 +1,2 @@
+import {spawnSync} from 'node:child_process';
+for(const script of ['test.mjs','test-restaurant.mjs','test-growth.mjs','test-growth-ui.mjs','test-pos-ui.mjs','test-offline.mjs','test-business.mjs','test-business-ui.mjs','test-auth.mjs']){const result=spawnSync(process.execPath,['scripts/'+script],{encoding:'utf8'});process.stdout.write(result.stdout);if(result.status!==0){process.stderr.write(result.stderr);process.exit(result.status||1)}}

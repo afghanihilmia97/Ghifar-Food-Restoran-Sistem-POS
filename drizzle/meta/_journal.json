@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1791247418584,
+      "tag": "0000_melodic_spiral",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1791247907272,
+      "tag": "0001_neat_betty_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791266677922,
+      "tag": "0002_lame_photon",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1791358758593,
+      "tag": "0003_busy_mathemanic",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1791359169192,
+      "tag": "0004_slimy_colossus",
+      "breakpoints": true
+    }
+  ]
+}

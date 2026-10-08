@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import {build} from 'esbuild';
+fs.copyFileSync('src/core.js','dist/core.js');
+fs.copyFileSync('src/restaurant.js','dist/restaurant.js');
+fs.copyFileSync('src/growth.js','dist/growth.js');
+fs.copyFileSync('src/business.js','dist/business.js');
+fs.copyFileSync('src/categories.js','dist/categories.js');
+await build({entryPoints:['node_modules/xlsx/xlsx.mjs'],bundle:true,format:'esm',outfile:'dist/spreadsheet.js',platform:'browser',minify:true});
+await build({entryPoints:['node_modules/qrcode/lib/browser.js'],bundle:true,format:'esm',outfile:'dist/qr.js',platform:'browser'});
+const files=['index.html','styles.css','app.js','enterprise.js','enterprise.css','operations.js','operations.css','offline.js','service-worker.js','manifest.webmanifest','app-icon.svg','core.js','restaurant.js','qr.js','growth.js','growth-ui.js','growth.css','spreadsheet.js','business.js','business-ui.js','business.css','categories.js'];
+const assets=Object.fromEntries(files.map(f=>['/'+f,fs.readFileSync('dist/'+f,'utf8')]));
+fs.mkdirSync('dist/server',{recursive:true});
+await build({entryPoints:['worker/index.js'],bundle:true,platform:'browser',format:'esm',outfile:'dist/server/index.js',banner:{js:'const ASSETS='+JSON.stringify(assets)+';'}});

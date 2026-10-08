@@ -1,0 +1,16 @@
+name = "ghifar-food"
+main = "hosting/cloudflare.mjs"
+compatibility_date = "2026-10-08"
+
+[build]
+command = "npm run build"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ghifar-food-db"
+database_id = "GANTI_DENGAN_DATABASE_ID_ANDA"
+migrations_dir = "drizzle"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "ghifar-food-storage"

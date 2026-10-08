@@ -1,0 +1,27 @@
+{
+  "name": "ghifar-food",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "db:generate": "drizzle-kit generate",
+    "test": "node scripts/test-all.mjs",
+    "start": "node --env-file-if-exists=.env hosting/server.mjs",
+    "test:hosting": "node scripts/test-hosting.mjs"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.0",
+    "jose": "^6.2.12",
+    "qrcode": "^1.5.4",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.0",
+    "jsdom": "^30.1.2",
+    "esbuild": "0.25.12"
+  },
+  "version": "17.0.0",
+  "engines": {
+    "node": ">=24 <25"
+  }
+}

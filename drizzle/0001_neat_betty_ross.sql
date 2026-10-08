@@ -1,0 +1,2 @@
+CREATE INDEX `online_orders_workspace_created` ON `online_orders` (`workspace`,`created`);--> statement-breakpoint
+CREATE INDEX `online_orders_inbox` ON `online_orders` (`workspace`,`claimed`,`created`);

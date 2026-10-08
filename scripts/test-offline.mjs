@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const data=new Map();
+globalThis.indexedDB={open(){const request={result:{createObjectStore(){},transaction(){const tx={objectStore(){return {get(k){const r={};queueMicrotask(()=>{r.result=structuredClone(data.get(k));r.onsuccess?.()});return r},put(v,k){data.set(k,structuredClone(v));queueMicrotask(()=>tx.oncomplete?.())},delete(k){data.delete(k);queueMicrotask(()=>tx.oncomplete?.())}}}};return tx}}};queueMicrotask(()=>{request.onupgradeneeded?.();request.onsuccess?.()});return request}};
+const {offlineStore:store}=await import('../dist/offline.js');
+const a={workspace:'A',user:'alice',email:'alice@example.test'},b={workspace:'A',user:'bob'},c={workspace:'B',user:'alice'};let count=0;const check=(v)=>{assert.ok(v);count++};
+await store.cache(a,{secret:'not-opted-in'},1);check(await store.last()===null);await store.enable(a);await store.cache(a,{orders:[]},1);check((await store.last()).session.user==='alice');check(!await store.enabled(b)&&!await store.enabled(c));
+await store.add(a,{id:'command-123',type:'create-order',payload:{id:'order-123'}});await store.add(a,{id:'command-123',type:'create-order',payload:{id:'order-123'}});check((await store.queue(a)).length===1);check((await store.queue(b)).length===0);await assert.rejects(()=>store.signout(a));count++;
+await store.update(a,'command-123',{status:'Perlu ditinjau',error:'Harga berubah'});check((await store.queue(a))[0].error==='Harga berubah');await store.remove(a,'command-123');await store.signout(a);check(!await store.enabled(a)&&await store.last()===null);
+const events={};const context=vm.createContext({self:{location:{origin:'https://example.test'},addEventListener:(name,fn)=>events[name]=fn,skipWaiting(){},clients:{claim(){}}},URL,fetch:async()=>{throw Error('offline')},caches:{match:async()=>({html:'cached shell'})}});vm.runInContext(fs.readFileSync('dist/service-worker.js','utf8'),context);
+let response;events.fetch({request:{method:'GET',url:'https://example.test/api/state',mode:'cors'},respondWith:r=>response=r});check(response===undefined);events.fetch({request:{method:'GET',url:'https://example.test/signin-with-chatgpt',mode:'navigate'},respondWith:r=>response=r});check(response===undefined);events.fetch({request:{method:'GET',url:'https://example.test/',mode:'navigate'},respondWith:r=>response=r});check((await response).html==='cached shell');
+console.log(count+' pemeriksaan offline, isolasi akun, antrean, dan cache shell lulus.');

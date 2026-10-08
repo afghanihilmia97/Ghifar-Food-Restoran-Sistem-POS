@@ -1,0 +1,16 @@
+[Unit]
+Description=Ghifar Food Restaurant OS
+After=network.target
+
+[Service]
+Type=simple
+User=ghifar
+WorkingDirectory=/opt/ghifar-food
+EnvironmentFile=/opt/ghifar-food/.env
+ExecStart=/usr/bin/node /opt/ghifar-food/hosting/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
